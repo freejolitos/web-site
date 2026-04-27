@@ -1,0 +1,97 @@
+---
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+const latest = posts.sort((a, b) => {
+  const da = a.data.date ? new Date(a.data.date).getTime() : 0;
+  const db = b.data.date ? new Date(b.data.date).getTime() : 0;
+  return db - da;
+})[0];
+---
+<div class="status-block terminal-block" aria-label="Estado de servicios">
+  <div class="status-line">
+    <span class="prompt">[okami@freejolitos ~]$ </span><span class="cmd">systemctl status freejolitos.target</span>
+  </div>
+  <div class="status-services">
+    <div class="svc">
+      <span class="status-dot status-dot--active" aria-hidden="true"></span>
+      <span class="svc-name">matrix.service</span>
+      <span class="svc-dots" aria-hidden="true"> ...... </span>
+      <span class="svc-state">active (running)</span>
+    </div>
+    <div class="svc">
+      <span class="status-dot status-dot--active" aria-hidden="true"></span>
+      <span class="svc-name">web.service</span>
+      <span class="svc-dots" aria-hidden="true"> ......... </span>
+      <span class="svc-state">active (running)</span>
+    </div>
+    {latest && (
+      <div class="svc svc--post">
+        <span class="svc-arrow">→</span>
+        <span class="svc-name">último post</span>
+        <span class="svc-dots" aria-hidden="true"> ...... </span>
+        <a
+          href={`/blog/${latest.data.category}/${latest.slug}/`}
+          class="svc-post-title"
+        >{latest.data.title}</a>
+      </div>
+    )}
+  </div>
+</div>
+
+<style>
+  .status-block {
+    margin: 2.5rem 0;
+  }
+
+  .status-line {
+    margin-bottom: 0.6rem;
+  }
+
+  .status-services {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .svc {
+    display: flex;
+    align-items: baseline;
+    gap: 0;
+    flex-wrap: wrap;
+  }
+
+  .svc-name {
+    color: var(--fg);
+    min-width: 16ch;
+  }
+
+  .svc-dots {
+    color: var(--stroke);
+    flex-shrink: 0;
+  }
+
+  .svc-state {
+    color: var(--fg-dim);
+  }
+
+  .svc--post .svc-arrow {
+    color: var(--fg-dim);
+    margin-right: 0.5em;
+  }
+
+  .svc--post .svc-name {
+    min-width: 14ch;
+  }
+
+  .svc-post-title {
+    color: var(--fg);
+    text-decoration: none;
+    font-style: italic;
+  }
+
+  .svc-post-title:hover {
+    color: var(--fg-bright);
+    text-shadow: var(--glow-sm);
+  }
+</style>

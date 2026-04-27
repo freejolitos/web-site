@@ -1,0 +1,27 @@
+---
+title: "Freejolitos — Manifiesto"
+---
+
+Esto no es una introducción.
+
+Si llegaste aquí, ya sabes buscar. Probablemente ya tienes una terminal abierta en otro escritorio, un cliente de Matrix corriendo en segundo plano, y una opinión formada sobre por qué la web centralizada es un problema de diseño, no de uso. No necesitas que te expliquemos nada. Pero hay cosas que vale la pena decir en voz alta, aunque sea una vez.
+
+El internet que conoces no es el internet que existió, ni el que puede existir. Lo que hoy llamamos web es en gran medida una red de jardines cerrados administrados por corporaciones que convirtieron la participación en producto y la identidad en dato monetizable. No es una conspiración. Es un modelo de negocio, y funciona exactamente como fue diseñado. El problema es que la mayoría lo habita como si fuera el único internet posible.
+
+No lo es.
+
+Existe otra capa. Siempre existió. Federada, descentralizada, construida por gente que entiende que la tecnología no es neutral y que esa falta de neutralidad tiene consecuencias reales sobre cómo pensamos, nos comunicamos y nos organizamos. Esa capa no tiene un solo nombre ni una sola dirección. Tiene nodos. Freejolitos es uno de ellos.
+
+Somos un nodo de cultura hacker. No en el sentido que los medios masivos le dieron a esa palabra, sino en el original: la curiosidad como motor, el sistema como objeto de estudio y modificación, el conocimiento como algo que se comparte porque acumularlo sin transmitirlo es una forma de desperdicio. Cultura hacker es una manera de relacionarse con la tecnología y con el mundo. No requiere capucha ni intención maliciosa. Requiere criterio.
+
+Existimos desde antes de que las redes sociales decidieran qué podías decir, cómo podías decirlo y a quién le llegaba. Hemos tenido presencia en hackerspaces y eventos de seguridad. Desaparecimos un tiempo, como desaparecen las cosas que no dependen de métricas para justificar su existencia. Volvimos, porque estas cosas no mueren del todo. Solo esperan a que alguien vuelva a encender el servidor.
+
+El idioma principal aquí es el español. No por localismo ni por nostalgia de origen, sino porque el conocimiento técnico serio en español sigue siendo escaso, y esa escasez no es inevitable. Es una omisión que se puede corregir con trabajo. Llevamos años corrigiéndola. Si tienes algo que decir, el idioma es lo de menos. Lo que importa es que lo digas con precisión y que valga la pena leerlo.
+
+No somos una plataforma de aprendizaje para principiantes absolutos. No tenemos sección de bienvenida ni tutorial de primeros pasos. Hay gente aquí dispuesta a compartir lo que sabe con quien tenga curiosidad genuina, y eso es distinto a tener un equipo de soporte. La diferencia la nota quien llega con una pregunta real, no quien llega esperando que le resuelvan lo que Google ya respondió.
+
+Operamos en Matrix porque la conversación efímera tiene su lugar, pero también creemos en los espacios donde el conocimiento se deposita y permanece. Estamos en los hackerspaces y eventos donde la cultura hacker todavía ocurre en carne y silicio, no solo en pantallas. La presencia física importa. Las redes que duran se construyen también con apretones de mano y café frío a las tres de la mañana frente a un teclado.
+
+No pedimos que estés de acuerdo con todo lo que circula aquí. Pedimos que pienses antes de hablar, que contribuyas cuando puedas, y que entiendas que este espacio existe porque alguien decidió construirlo y mantenerlo, no porque un algoritmo lo recomiende.
+
+Conocimiento libre. Expresión sin filtro corporativo. Red sin dueño.

@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const categories = ['cultura', 'tecnico', 'opinion', 'eventos'] as const;
+  return categories.map(categoria => ({ params: { categoria } }));
+}
+
+const { categoria } = Astro.params as { categoria: string };
+
+const posts = await getCollection('blog', p => p.data.category === categoria);
+posts.sort((a, b) => {
+  const da = a.data.date ? new Date(a.data.date).getTime() : 0;
+  const db = b.data.date ? new Date(b.data.date).getTime() : 0;
+  return db - da;
+});
+---
+<BaseLayout title={`/blog/${categoria}`}>
+  <div class="cat-page">
+    <nav class="breadcrumb dim" aria-label="Ruta">
+      <a href="/blog/">/blog</a> / {categoria}
+    </nav>
+
+    <h1 class="glow">/{categoria}</h1>
+
+    {posts.length === 0 ? (
+      <p class="dim">— vacío por ahora —</p>
+    ) : (
+      <ul class="post-list" role="list">
+        {posts.map(post => (
+          <li class="post-item">
+            <a
+              href={`/blog/${categoria}/${post.slug}/`}
+              class="post-title"
+            >{post.data.title}</a>
+            {post.data.description && (
+              <p class="post-desc">{post.data.description}</p>
+            )}
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .cat-page {
+    max-width: var(--max-w);
+  }
+
+  .breadcrumb {
+    font-size: 0.82rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .breadcrumb a {
+    color: var(--fg-dim);
+  }
+
+  h1 { margin-bottom: 2rem; }
+
+  .post-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+</style>

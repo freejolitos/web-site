@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const categories = ['cultura', 'tecnico', 'opinion', 'eventos'] as const;
+
+const allPosts = await getCollection('blog');
+const byCategory = Object.fromEntries(
+  categories.map(cat => [
+    cat,
+    allPosts
+      .filter(p => p.data.category === cat)
+      .sort((a, b) => {
+        const da = a.data.date ? new Date(a.data.date).getTime() : 0;
+        const db = b.data.date ? new Date(b.data.date).getTime() : 0;
+        return db - da;
+      }),
+  ])
+);
+---
+<BaseLayout title="Blog" description="Publicaciones de Freejolitos. Contenido técnico y cultural en español.">
+  <div class="blog-index">
+    <h1 class="glow">/blog</h1>
+
+    {categories.map(cat => (
+      <section class="cat-section">
+        <h2>
+          <a href={`/blog/${cat}/`} class="cat-link">/{cat}</a>
+          <span class="cat-count dim"> ({byCategory[cat].length})</span>
+        </h2>
+
+        {byCategory[cat].length === 0 ? (
+          <p class="cat-empty dim">— vacío por ahora —</p>
+        ) : (
+          <ul class="post-list" role="list">
+            {byCategory[cat].map(post => (
+              <li class="post-item">
+                <a
+                  href={`/blog/${cat}/${post.slug}/`}
+                  class="post-title"
+                >{post.data.title}</a>
+                {post.data.description && (
+                  <p class="post-desc">{post.data.description}</p>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  .blog-index {
+    max-width: var(--max-w);
+  }
+
+  h1 {
+    margin-bottom: 2rem;
+  }
+
+  .cat-section {
+    margin-bottom: 2.5rem;
+  }
+
+  .cat-section h2 {
+    margin-top: 0;
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .cat-link {
+    color: var(--fg-bright);
+    text-decoration: none;
+  }
+
+  .cat-link:hover {
+    text-shadow: var(--glow-sm);
+  }
+
+  .cat-count {
+    font-weight: 400;
+    font-size: 0.85em;
+  }
+
+  .cat-empty {
+    font-size: 0.88rem;
+    margin: 0;
+  }
+
+  .post-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+</style>

@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="FAQ"
+  description="Preguntas frecuentes sobre Freejolitos, Matrix, el blog y cómo contribuir."
+>
+  <article class="faq">
+    <h1 class="glow">/usr/src/faq</h1>
+
+    <section>
+      <h2>¿Qué es Matrix y cómo me conecto?</h2>
+      <p>
+        Matrix es un protocolo abierto y federado para comunicación en tiempo real. Funciona parecido al correo electrónico: hay muchos servidores, puedes estar en uno y hablar con gente en otro. Nadie es dueño de la red.
+      </p>
+      <p>
+        Para conectarte a nuestra instancia: descarga <a href="https://element.io" rel="noopener">Element</a> o <a href="https://cinny.in" rel="noopener">Cinny</a>, selecciona "servidor personalizado" en la pantalla de inicio de sesión, e ingresa <code>matrix.freejolitos.com</code>. Crea una cuenta ahí.
+      </p>
+    </section>
+
+    <section>
+      <h2>¿Puedo publicar en el blog?</h2>
+      <p>
+        Sí, con criterio. No hay un formulario de envío ni un proceso formal. El camino es el Matrix: pasa al canal correspondiente, propón el tema. Si el contenido tiene nivel y encaja con el tono del sitio, hay manera de publicarlo.
+      </p>
+    </section>
+
+    <section>
+      <h2>¿Hay reglas?</h2>
+      <p>
+        Sí. Sentido común, conocimiento genuino, sin spam, sin publicidad. Las mismas de siempre. Más detallado en la <a href="/servicios/matrix/">página del servidor Matrix</a>.
+      </p>
+    </section>
+
+    <section>
+      <h2>¿En qué idioma opera esto?</h2>
+      <p>
+        Español primero. No por nostalgia ni por exclusión, sino porque el conocimiento técnico serio en español sigue siendo escaso y esa escasez se puede corregir. Si tienes algo que decir en otro idioma y vale la pena leerlo, bienvenido. El idioma es lo de menos; la precisión y el nivel no.
+      </p>
+    </section>
+
+    <section>
+      <h2>¿Cómo puedo contribuir?</h2>
+      <p>
+        Matrix primero. Llega, participa, aporta. Después se ve si hay algo más concreto que hacer.
+      </p>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .faq { max-width: var(--max-w); }
+
+  h1 { margin-bottom: 2rem; }
+
+  section {
+    margin-bottom: 2rem;
+  }
+
+  section h2 {
+    margin-top: 0;
+    font-size: 1rem;
+    color: var(--fg-bright);
+    margin-bottom: 0.5rem;
+  }
+
+  section p:last-child { margin-bottom: 0; }
+</style>

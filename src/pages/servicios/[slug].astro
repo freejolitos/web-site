@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const servicios = await getCollection('servicios');
+  return servicios.map(srv => ({
+    params: { slug: srv.slug },
+    props: { srv },
+  }));
+}
+
+const { srv } = Astro.props;
+const { Content } = await render(srv);
+---
+<BaseLayout title={srv.data.title} description={srv.data.description}>
+  <article class="srv-page">
+    <nav class="breadcrumb dim">
+      <a href="/servicios/">/srv</a> / {srv.slug}
+    </nav>
+
+    <h1 class="glow">{srv.data.title}</h1>
+
+    <div class="srv-status">
+      <span class={`status-dot status-dot--${srv.data.status === 'activo' ? 'active' : 'inactive'}`} aria-hidden="true"></span>
+      <span class="dim">{srv.data.status}</span>
+    </div>
+
+    <div class="srv-content">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .srv-page { max-width: var(--max-w); }
+
+  .breadcrumb {
+    font-size: 0.82rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .breadcrumb a { color: var(--fg-dim); }
+
+  h1 { margin-bottom: 0.5rem; }
+
+  .srv-status {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.82rem;
+    margin-bottom: 2rem;
+  }
+
+  .srv-content {
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+</style>

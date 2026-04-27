@@ -1,0 +1,73 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import MatrixComments from '../components/MatrixComments.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  category: string;
+  slug: string;
+  date?: Date;
+}
+
+const { title, description, category, slug, date } = Astro.props;
+---
+<BaseLayout title={title} description={description}>
+  <article class="post">
+    <header class="post-header">
+      <div class="post-meta-top">
+        <a href={`/blog/${category}/`} class="cat-badge">/blog/{category}</a>
+        {date && (
+          <time
+            datetime={date.toISOString().split('T')[0]}
+            class="post-date dim"
+          >{date.toISOString().split('T')[0]}</time>
+        )}
+      </div>
+      <h1 class="post-title">{title}</h1>
+    </header>
+
+    <div class="post-content">
+      <slot />
+    </div>
+
+    <MatrixComments slug={slug} />
+  </article>
+</BaseLayout>
+
+<style>
+  .post {
+    max-width: var(--max-w);
+  }
+
+  .post-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .post-meta-top {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.82rem;
+  }
+
+  .post-date {
+    font-size: 0.78rem;
+  }
+
+  .post-title {
+    font-size: clamp(1.2rem, 3.5vw, 1.7rem);
+    line-height: 1.25;
+  }
+
+  .post-content {
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  /* Prompt closing line en posts */
+  .post-content p:last-child:has(.post-prompt) {
+    margin-top: 2rem;
+  }
+</style>

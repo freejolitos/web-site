@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Acerca"
+  description="Qué es Freejolitos, qué no es, y quién lo opera."
+>
+  <article class="acerca">
+    <h1 class="glow">/etc/acerca</h1>
+
+    <p>
+      Freejolitos empezó como una necesidad concreta: la documentación técnica seria en español era escasa, y esa escasez no era inevitable. La comunidad se construyó alrededor de esa idea — con un blog, presencia en hackerspaces, y eventualmente una instancia de Matrix cuando el protocolo todavía se estaba consolidando.
+    </p>
+
+    <p>
+      Hubo una pausa. No fue planificada. Los proyectos que dependen de tiempo real y no de dinero externo tienen ese riesgo: cuando el tiempo se acaba, el proyecto se detiene. No hubo drama, no hubo anuncio. Solo silencio por un tiempo.
+    </p>
+
+    <p>
+      Lo que existe ahora es la versión que queda después de eso: sin pretensiones de escala, sin métricas que justifiquen la existencia. Un nodo de cultura hacker en español, con los servicios que tiene sentido operar y el contenido que vale la pena escribir. Eso es lo que es Freejolitos hoy.
+    </p>
+
+    <hr class="divider" />
+
+    <h2>Qué no es</h2>
+    <ul>
+      <li>Soporte técnico básico. No respondemos "¿cómo instalo X?"</li>
+      <li>Red social. No hay perfiles, no hay follows, no hay engagement.</li>
+      <li>Comunidad para principiantes absolutos. Hay paciencia para quien tiene curiosidad genuina; no hay paciencia para quien espera que le resuelvan lo que Google ya respondió.</li>
+    </ul>
+
+    <hr class="divider" />
+
+    <h2>Operación</h2>
+    <p>
+      El nodo lo opera <strong>okami</strong>. No es una organización, no hay un equipo de soporte, no hay un formulario de contacto. Si necesitas algo, el camino es el <a href="/servicios/matrix/">Matrix</a>.
+    </p>
+
+    <hr class="divider" />
+
+    <h2>Referencias culturales</h2>
+    <p>
+      El tono de esto tiene coordenadas: <em>Cyberia</em>, <em>Systemspace</em>, cultura hacker clásica en el sentido de <em>Hackers: Heroes of the Computer Revolution</em>. No hace falta explicarlas. Si las reconoces, ya sabes dónde estás.
+    </p>
+  </article>
+</BaseLayout>
+
+<style>
+  .acerca { max-width: var(--max-w); }
+  h1 { margin-bottom: 2rem; }
+</style>

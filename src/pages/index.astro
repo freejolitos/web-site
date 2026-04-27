@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import StatusBlock from '../components/StatusBlock.astro';
+import { getEntry, render } from 'astro:content';
+
+const manifesto = await getEntry('pages', 'manifiesto');
+const { Content } = await render(manifesto);
+---
+<BaseLayout>
+  <div class="home">
+    <section class="manifesto" aria-label="Manifiesto">
+      <Content />
+      <p class="manifesto-prompt">
+        [okami@freejolitos]$<span class="cursor" aria-hidden="true"></span>
+      </p>
+    </section>
+
+    <StatusBlock />
+
+    <p class="home-cta-wrap">
+      <a href="https://matrix.freejolitos.com" class="cta" rel="noopener">
+        → entrar al Matrix
+      </a>
+    </p>
+  </div>
+</BaseLayout>
+
+<style>
+  .home {
+    max-width: var(--max-w);
+  }
+
+  .home-cta-wrap {
+    margin-bottom: 0;
+  }
+</style>

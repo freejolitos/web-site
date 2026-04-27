@@ -1,0 +1,11 @@
+---
+interface Props {
+  command?: string;
+  class?: string;
+}
+const { command = '', class: className = '' } = Astro.props;
+---
+<div class={`terminal-block${className ? ' ' + className : ''}`}>
+  <span class="prompt">[okami@freejolitos]$ </span><span class="cmd">{command}</span>
+  <slot />
+</div>

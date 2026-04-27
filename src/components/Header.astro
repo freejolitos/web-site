@@ -1,0 +1,86 @@
+---
+import PromptLogo from './PromptLogo.astro';
+
+const nav = [
+  { href: '/',           label: '/home' },
+  { href: '/blog/',      label: '/blog' },
+  { href: '/servicios/', label: '/srv' },
+  { href: '/acerca/',    label: '/etc/acerca' },
+  { href: '/faq/',       label: '/usr/src/faq' },
+];
+
+const current = Astro.url.pathname;
+---
+<header>
+  <div class="header-inner">
+    <a href="/" class="header-logo" aria-label="Freejolitos — inicio">
+      <PromptLogo size={36} glow />
+      <span class="header-wordmark">freejolitos</span>
+    </a>
+    <nav aria-label="Navegación principal">
+      <ul role="list">
+        {nav.map(({ href, label }) => (
+          <li>
+            <a
+              href={href}
+              class="nav-link"
+              aria-current={current === href || (href !== '/' && current.startsWith(href)) ? 'page' : undefined}
+            >{label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  header {
+    border-bottom: 1px solid var(--stroke);
+    padding: 0.75rem var(--pad);
+  }
+
+  .header-inner {
+    max-width: calc(var(--max-w) + var(--pad) * 2);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .header-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    color: var(--fg);
+    font-weight: 700;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .header-logo:hover {
+    color: var(--fg-bright);
+    text-shadow: var(--glow-sm);
+  }
+
+  .header-wordmark {
+    letter-spacing: -0.02em;
+  }
+
+  nav ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  nav li { margin: 0; }
+
+  .nav-link {
+    font-size: 0.82rem;
+    color: var(--fg-dim);
+  }
+</style>

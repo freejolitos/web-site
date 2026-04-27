@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BeanEasterEgg from '../components/BeanEasterEgg.astro';
+---
+<BaseLayout title="404" noindex>
+  <div class="not-found">
+    <p class="error-code dim">404</p>
+    <h1>No encontrado.</h1>
+    <p class="dim">Esta ruta no existe o fue eliminada.</p>
+
+    <div class="terminal-block not-found-term">
+      <span class="prompt">[okami@freejolitos]$ </span><span class="cmd">cat /dev/null</span><br/>
+      <span class="dim">→ No such file or directory</span>
+    </div>
+
+    <p>
+      <a href="/">← /home</a>
+    </p>
+
+    <BeanEasterEgg size={100} class="not-found-bean" />
+  </div>
+</BaseLayout>
+
+<style>
+  .not-found {
+    max-width: var(--max-w);
+    padding-top: 2rem;
+  }
+
+  .error-code {
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+
+  h1 {
+    margin-bottom: 0.5rem;
+  }
+
+  .not-found-term {
+    margin: 1.5rem 0;
+  }
+
+  .not-found-bean {
+    display: block;
+    margin-top: 3rem;
+  }
+</style>

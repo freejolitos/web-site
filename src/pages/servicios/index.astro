@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const servicios = await getCollection('servicios', s => s.data.status === 'activo');
+servicios.sort((a, b) => a.data.order - b.data.order);
+
+const futuros = [
+  { label: 'Instancia Mastodon', slug: null },
+  { label: 'Nodo Meshtastic', slug: null },
+  { label: 'Repositorio git propio (Forgejo)', slug: null },
+];
+---
+<BaseLayout title="Servicios" description="Servicios operados por Freejolitos: Matrix, blog y presencia física.">
+  <div class="srv-index">
+    <h1 class="glow">/srv</h1>
+
+    <ul class="srv-list" role="list">
+      {servicios.map(srv => (
+        <li class="service-card">
+          <div class="service-title">
+            <a href={`/servicios/${srv.slug}/`}>{srv.data.title}</a>
+          </div>
+          <div class="service-status">
+            <span class="status-dot status-dot--active" aria-hidden="true"></span>
+            {srv.data.description}
+          </div>
+        </li>
+      ))}
+    </ul>
+
+    <hr class="divider" />
+
+    <h2 class="futuro-heading dim">posibles a futuro</h2>
+    <p class="futuro-note dim">Sin compromiso. Cosas que podrían existir si alguien las construye.</p>
+    <ul class="futuro-list" role="list">
+      {futuros.map(f => (
+        <li class="futuro-item dim">— {f.label}</li>
+      ))}
+    </ul>
+  </div>
+</BaseLayout>
+
+<style>
+  .srv-index { max-width: var(--max-w); }
+
+  h1 { margin-bottom: 2rem; }
+
+  .srv-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+  }
+
+  .futuro-heading {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 0.25rem;
+  }
+
+  .futuro-note {
+    font-size: 0.82rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .futuro-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.88rem;
+  }
+
+  .futuro-item { margin-bottom: 0.2rem; }
+</style>
