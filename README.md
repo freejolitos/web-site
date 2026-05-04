@@ -68,9 +68,11 @@ Para publicar como colaborador externo: abre un pull request con el archivo.
 
 ## Deploy
 
-Ver `deploy/post-receive.sh` y `deploy/nginx.conf.example`.
+Ver [DEPLOY.md](DEPLOY.md) para el flujo completo y requisitos del VPS.
 
-El flujo básico: push al repo bare del VPS → hook corre `npm run build` → `rsync` a `/var/www/freejolitos.com`.
+## Referencia del proyecto
+
+Ver [PROYECTO.md](PROYECTO.md) para el sistema de diseño, tono editorial, convenciones de código y guía para continuar el desarrollo.
 
 ## Fuentes
 
