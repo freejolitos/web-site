@@ -1,0 +1,277 @@
+---
+---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>/dev/tty0</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      background: #000;
+      color: #b2df82;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 14px;
+      overflow: hidden;
+    }
+
+    /* ── terminal ── */
+    #tty-wrap {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding: 1.25rem 1.5rem;
+    }
+
+    #tty-out {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      white-space: pre-wrap;
+      word-break: break-all;
+      padding-bottom: 0.5rem;
+      scrollbar-width: thin;
+      scrollbar-color: #1f1f1f #000;
+    }
+
+    .line { display: block; line-height: 1.6; }
+    .line.echo  { color: #6e8c52; }
+    .line.err   { color: #ff6b6b; }
+    .line.dim   { color: #6e8c52; }
+    .line.bright{ color: #d6f5b3; }
+
+    #tty-row {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+      margin-top: 0.25rem;
+      border-top: 1px solid #111;
+      padding-top: 0.4rem;
+    }
+
+    #tty-prompt { color: #b2df82; white-space: nowrap; flex-shrink: 0; }
+
+    #tty-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #b2df82;
+      font: inherit;
+      caret-color: #b2df82;
+      padding: 0;
+    }
+
+    /* ── doom overlay ── */
+    #doom-wrap {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #000;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    #doom-el {
+      width: 100%;
+      max-width: 854px;
+      aspect-ratio: 4/3;
+    }
+
+    #doom-exit-btn {
+      position: absolute;
+      top: 0.6rem;
+      right: 1rem;
+      background: transparent;
+      border: 1px solid #6e8c52;
+      color: #6e8c52;
+      font: 0.75rem 'JetBrains Mono', monospace;
+      padding: 0.2rem 0.6rem;
+      cursor: pointer;
+      z-index: 10;
+    }
+    #doom-exit-btn:hover { color: #b2df82; border-color: #b2df82; }
+  </style>
+</head>
+<body>
+  <div id="tty-wrap">
+    <div id="tty-out"></div>
+    <div id="tty-row">
+      <span id="tty-prompt">[okami@tty0]$ </span>
+      <input id="tty-input" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" autofocus />
+    </div>
+  </div>
+
+  <div id="doom-wrap">
+    <button id="doom-exit-btn">[ exit ]</button>
+    <div id="doom-el"></div>
+  </div>
+
+  <script is:inline>
+  (function () {
+    var out   = document.getElementById('tty-out');
+    var inp   = document.getElementById('tty-input');
+    var ttyWrap  = document.getElementById('tty-wrap');
+    var doomWrap = document.getElementById('doom-wrap');
+    var hist  = [];
+    var hIdx  = -1;
+
+    /* ── helpers ── */
+    function print(text, cls) {
+      var el = document.createElement('div');
+      el.className = 'line' + (cls ? ' ' + cls : '');
+      el.textContent = text;
+      out.appendChild(el);
+      out.scrollTop = out.scrollHeight;
+    }
+
+    function printEcho(cmd) {
+      print('[okami@tty0]$ ' + cmd, 'echo');
+    }
+
+    /* ── commands ── */
+    function runLs() {
+      print('bin/  dev/  etc/  usr/  var/  doom/');
+    }
+
+    function runCat(args) {
+      var f = args.trim();
+      if (f === '/etc/motd' || f === 'motd') {
+        print('Conocimiento libre.');
+        print('Expresión sin filtro corporativo.');
+        print('Red sin dueño.');
+        print('');
+        print('                       — freejolitos.com', 'dim');
+      } else if (f === '/etc/hostname' || f === 'hostname') {
+        print('freejolitos');
+      } else if (f === '') {
+        print('cat: missing operand', 'err');
+      } else {
+        print('cat: ' + f + ': No such file or directory', 'err');
+      }
+    }
+
+    function runHelp() {
+      print('');
+      print('available commands:', 'bright');
+      print('  ls              list directory contents');
+      print('  cat <file>      print file contents');
+      print('  whoami          effective user');
+      print('  uname -a        system information');
+      print('  clear           clear terminal');
+      print('  exit            return to freejolitos.com');
+      print('  doom            ...');
+      print('');
+    }
+
+    var CMD = {
+      help:       runHelp,
+      ls:         runLs,
+      whoami:     function(){ print('guest'); },
+      'uname -a': function(){ print('Freejolitos 6.6.6-cyberpunk #_ SMP x86_64 GNU/Hacker'); },
+    };
+
+    function isDoom(c) {
+      var n = c.toLowerCase().replace(/\s+/g,' ').trim();
+      return ['doom','bash doom/play.sh','/usr/games/doom','./doom/play.sh'].indexOf(n) !== -1;
+    }
+
+    /* ── exec ── */
+    function exec(raw) {
+      var cmd = raw.trim();
+      printEcho(cmd);
+      if (!cmd) return;
+
+      if (cmd === 'clear')  { out.innerHTML = ''; return; }
+      if (cmd === 'exit')   { location.href = '/'; return; }
+      if (isDoom(cmd))      { launchDoom(); return; }
+      if (cmd.startsWith('ls'))  { runLs(); return; }
+      if (cmd.startsWith('cat '))  { runCat(cmd.slice(4)); return; }
+
+      var handler = CMD[cmd.toLowerCase()];
+      if (handler) { handler(); }
+      else { print('-tty0: ' + cmd + ': command not found', 'err'); }
+
+      out.scrollTop = out.scrollHeight;
+    }
+
+    /* ── doom launcher ── */
+    function launchDoom() {
+      print('');
+      print('loading doom/play.sh...', 'dim');
+
+      var s = document.createElement('script');
+      s.src = '/games/doom/js-dos.js';
+      s.onload = function () {
+        if (typeof Dos === 'undefined') {
+          print('bash: doom/play.sh: emulator init failed', 'err');
+          return;
+        }
+        print('FreeDOOM is loading... [ exit ] button to quit', 'dim');
+        ttyWrap.style.display = 'none';
+        doomWrap.style.display = 'flex';
+        try {
+          Dos(document.getElementById('doom-el'), {
+            url: '/games/doom/freedoom.jsdos',
+            pathPrefix: '/games/doom/',
+          });
+        } catch (e) {
+          exitDoom();
+          print('bash: doom/play.sh: ' + e.message, 'err');
+        }
+      };
+      s.onerror = function () {
+        print('bash: doom/play.sh: cannot load emulator', 'err');
+        print('  see /games/doom/README.txt for setup instructions', 'dim');
+      };
+      document.head.appendChild(s);
+    }
+
+    function exitDoom() {
+      doomWrap.style.display = 'none';
+      ttyWrap.style.display = 'flex';
+      inp.focus();
+    }
+
+    document.getElementById('doom-exit-btn').addEventListener('click', exitDoom);
+
+    /* ── input ── */
+    inp.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        var val = this.value;
+        if (val.trim()) { hist.unshift(val); hIdx = -1; }
+        exec(val);
+        this.value = '';
+      }
+      if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (hIdx + 1 < hist.length) { hIdx++; this.value = hist[hIdx]; }
+      }
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (hIdx > 0) { hIdx--; this.value = hist[hIdx]; }
+        else { hIdx = -1; this.value = ''; }
+      }
+    });
+
+    /* ── boot ── */
+    var now = new Date().toUTCString().replace(/\s+GMT$/, ' UTC');
+    print(' ');
+    print('  # _   freejolitos.com', 'bright');
+    print('  ─────────────────────');
+    print('  /dev/tty0');
+    print(' ');
+    print('Last login: ' + now, 'dim');
+    print("Type 'help' for available commands.", 'dim');
+    print(' ');
+    inp.focus();
+  })();
+  </script>
+</body>
+</html>

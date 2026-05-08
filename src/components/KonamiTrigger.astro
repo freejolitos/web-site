@@ -1,0 +1,11 @@
+---
+---
+<script is:inline>
+(function(){
+  var k=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','KeyB','KeyA'],i=0;
+  document.addEventListener('keydown',function(e){
+    i=e.code===k[i]?i+1:(e.code===k[0]?1:0);
+    if(i===k.length)location.href='/dev/tty0/';
+  });
+})();
+</script>

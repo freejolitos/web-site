@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /dev/tty0/
 
 User-agent: ClaudeBot
 Allow: /
