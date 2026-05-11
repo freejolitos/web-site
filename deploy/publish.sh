@@ -18,17 +18,30 @@ REMOTE_TMP="deploy-tmp"          # relativo al home del VPS, sin ~
 WEBROOT="/var/www/html/freejolitos-root"
 DOOM_DIR="public/games/doom"
 JSDOS_BASE="https://v8.js-dos.com/latest"
+EMULATORS_BASE="${JSDOS_BASE}/emulators"
 
 echo ""
 echo "==> 0/3  Assets de DOOM"
-if [ ! -f "${DOOM_DIR}/js-dos.js" ] || [ ! -f "${DOOM_DIR}/js-dos.wasm" ]; then
-  echo "    Descargando js-dos v8..."
-  curl -fsSL -o "${DOOM_DIR}/js-dos.js"   "${JSDOS_BASE}/js-dos.js"
-  curl -fsSL -o "${DOOM_DIR}/js-dos.wasm" "${JSDOS_BASE}/js-dos.wasm"
-  echo "    ✓ js-dos.js + js-dos.wasm"
+
+# js-dos.js  — interfaz/UI del emulador
+if [ ! -f "${DOOM_DIR}/js-dos.js" ]; then
+  echo "    Descargando js-dos.js..."
+  curl -fsSL -o "${DOOM_DIR}/js-dos.js" "${JSDOS_BASE}/js-dos.js"
+  echo "    ✓ js-dos.js"
 else
-  echo "    js-dos.js y js-dos.wasm ya presentes, omitiendo descarga"
+  echo "    js-dos.js ya presente, omitiendo descarga"
 fi
+
+# Archivos del emulador (WASM + glue JS) — buscados en pathPrefix='/games/doom/'
+for EMU_FILE in emulators.js wdosbox.js wdosbox.wasm wlibzip.js wlibzip.wasm; do
+  if [ ! -f "${DOOM_DIR}/${EMU_FILE}" ]; then
+    echo "    Descargando ${EMU_FILE}..."
+    curl -fsSL -o "${DOOM_DIR}/${EMU_FILE}" "${EMULATORS_BASE}/${EMU_FILE}"
+    echo "    ✓ ${EMU_FILE}"
+  else
+    echo "    ${EMU_FILE} ya presente, omitiendo descarga"
+  fi
+done
 
 if [ ! -f "${DOOM_DIR}/freedoom.jsdos" ]; then
   echo "    ⚠  ${DOOM_DIR}/freedoom.jsdos no encontrado"
